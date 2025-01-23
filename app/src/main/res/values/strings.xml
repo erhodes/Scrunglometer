@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Scrunglometer</string>
+
+    <string name="recipes">Recipes</string>
+    <string name="ingredients">Ingredients</string>
+
+    <string name ="error_empty">Name cannot be empty</string>
+</resources>
