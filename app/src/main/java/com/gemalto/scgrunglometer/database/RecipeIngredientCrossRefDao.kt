@@ -1,13 +1,13 @@
 package com.gemalto.scgrunglometer.database
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Embedded
+import androidx.room.Insert
 import androidx.room.Junction
 import androidx.room.Query
 import androidx.room.Relation
 import androidx.room.Transaction
-import com.gemalto.scgrunglometer.model.Ingredient
-import com.gemalto.scgrunglometer.model.Recipe
 
 data class RecipeWithIngredients(
     @Embedded val recipe: RecipeEntity,
@@ -25,4 +25,11 @@ interface RecipeIngredientCrossRefDao {
     @Query("SELECT * FROM recipeentity")
     fun getRecipesWithIngredients(): List<RecipeWithIngredients>
 
+    @Transaction
+    @Insert
+    fun insertRelationship(relationships: RecipeIngredientCrossRef)
+
+    @Transaction
+    @Delete
+    fun removeRelationship(relationships: RecipeIngredientCrossRef)
 }

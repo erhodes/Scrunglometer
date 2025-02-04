@@ -32,12 +32,17 @@ class RecipeViewModel: ViewModel() {
     fun addIngredientToRecipe(ingredient: Ingredient) {
         repository.addIngredientToRecipe(recipe, ingredient)
 
-//        recipe.ingredients.add(ingredient)
-//
-//        recipe = recipe.copy()
+        //todo this is a hack to force the ui to update. I think the only alternative is an event flow from the Repo
+        setActiveRecipe(recipe.copy())
+    }
+
+    fun removeIngredientFromRecipe(ingredient: Ingredient) {
+        repository.removeIngredientFromRecipe(recipe, ingredient)
+        //todo this is a hack to force the ui to update
+        setActiveRecipe(recipe.copy())
     }
 
     fun addRecipe(name: String) {
-        repository.addRecipe(Recipe(name))
+        repository.addRecipe(name)
     }
 }

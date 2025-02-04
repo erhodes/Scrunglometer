@@ -17,6 +17,7 @@ import com.gemalto.scgrunglometer.ui.Destinations
 import com.gemalto.scgrunglometer.ui.screen.HomeScreen
 import com.gemalto.scgrunglometer.ui.screen.IngredientListScreen
 import com.gemalto.scgrunglometer.ui.screen.RecipeListScreen
+import com.gemalto.scgrunglometer.ui.screen.RecipeManagementScreen
 import com.gemalto.scgrunglometer.ui.screen.RecipeScreen
 import com.gemalto.scgrunglometer.viewmodel.IngredientViewModel
 import com.gemalto.scgrunglometer.viewmodel.RecipeViewModel
@@ -86,8 +87,23 @@ fun MainApp(
                 RecipeScreen(
                     modifier = modifier,
                     recipe = recipe,
-                    onAdd = {
+                    onNavigateToDetails = {
+                        navController.navigate(Destinations.RecipeManagement)
+                    }
+                )
+            }
+
+            composable<Destinations.RecipeManagement> {
+                val recipe = recipeViewModel.recipe
+                val ingredients = ingredientViewModel.ingredients
+                RecipeManagementScreen(
+                    recipe = recipe,
+                    ingredients = ingredients,
+                    onAddIngredient = {
                         recipeViewModel.addIngredientToRecipe(it)
+                    },
+                    onRemoveIngredient = {
+                        recipeViewModel.removeIngredientFromRecipe(it)
                     }
                 )
             }

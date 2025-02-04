@@ -17,26 +17,26 @@ import com.gemalto.scgrunglometer.ui.IngredientDisplay
 import com.gemalto.scgrunglometer.ui.theme.ScrunglometerTheme
 
 @Composable
-fun IngredientListScreen(ingredients: List<Ingredient>, onAdd: (Ingredient) -> Unit, modifier: Modifier = Modifier) {
+fun IngredientListScreen(ingredients: List<Ingredient>, onAdd: (String) -> Unit, modifier: Modifier = Modifier) {
 
     Column {
         ingredients.forEach {
             IngredientDisplay(it)
         }
 
-        var newIngredient by rememberSaveable { mutableStateOf("") }
+        var newIngredientName by rememberSaveable { mutableStateOf("") }
         Row {
             OutlinedTextField(
-                value = newIngredient,
+                value = newIngredientName,
                 label = { Text("New Ingredient") },
                 onValueChange = {
-                    newIngredient = it
+                    newIngredientName = it
                 },
                 modifier = modifier
             )
             Button(
                 onClick = {
-                    onAdd(Ingredient(newIngredient))
+                    onAdd(newIngredientName)
                 }
             ) {
                 Text("Add")

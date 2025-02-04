@@ -4,5 +4,10 @@
     <string name="recipes">Recipes</string>
     <string name="ingredients">Ingredients</string>
 
+    <string name="manage_ingredients">Manage Ingredients</string>
+
+    <string name="add">Add</string>
+    <string name="remove">Remove</string>
+
     <string name ="error_empty">Name cannot be empty</string>
 </resources>

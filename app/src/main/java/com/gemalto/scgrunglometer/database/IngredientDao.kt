@@ -11,5 +11,5 @@ interface IngredientDao {
     fun getAll(): List<IngredientEntity>
 
     @Insert
-    fun insertAll(vararg recipes: IngredientEntity)
+    fun insert(ingredient: IngredientEntity): Long
 }

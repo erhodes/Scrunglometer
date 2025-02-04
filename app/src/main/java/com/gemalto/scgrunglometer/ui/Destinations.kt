@@ -15,4 +15,7 @@ sealed class Destinations {
 
     @Serializable
     data object RecipeDetails: Destinations()
+
+    @Serializable
+    data object RecipeManagement: Destinations()
 }

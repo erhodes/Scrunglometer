@@ -17,7 +17,7 @@ class IngredientViewModel: ViewModel() {
         repository = repo
     }
 
-    fun addIngredient(ingredient: Ingredient) {
-        repository.addIngredient(ingredient)
+    fun addIngredient(name: String) {
+        repository.addIngredient(name)
     }
 }

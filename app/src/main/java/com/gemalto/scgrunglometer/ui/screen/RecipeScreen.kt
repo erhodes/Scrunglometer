@@ -13,43 +13,65 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.gemalto.scgrunglometer.R
 import com.gemalto.scgrunglometer.model.Ingredient
 import com.gemalto.scgrunglometer.model.Recipe
 import com.gemalto.scgrunglometer.ui.IngredientDisplay
 import com.gemalto.scgrunglometer.ui.theme.ScrunglometerTheme
 
 @Composable
-fun RecipeScreen(recipe: Recipe, onAdd: (Ingredient) -> Unit, modifier: Modifier = Modifier) {
+fun RecipeScreen(recipe: Recipe, onNavigateToDetails: () -> Unit, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
     ) {
-        var newIngredient by rememberSaveable { mutableStateOf("") }
+//        var newIngredient by rememberSaveable { mutableStateOf("") }
         Text(
             text = recipe.name,
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleLarge
         )
         HorizontalDivider()
         recipe.ingredients.forEach {
             IngredientDisplay(it)
         }
-        Row {
-            OutlinedTextField(
-                value = newIngredient,
-                label = { Text("New Ingredient") },
-                onValueChange = {
-                    newIngredient = it
-                },
-                modifier = modifier
-            )
-            Button(
-                onClick = {
-                    onAdd(Ingredient(newIngredient))
-                }
-            ) {
-                Text("Add")
-            }
+
+        Button(
+            onClick = onNavigateToDetails
+        ) {
+            Text(stringResource(R.string.manage_ingredients))
         }
+
+//        ingredients.forEach {
+//            Row {
+//                Text(it.name)
+//                Button(
+//                    onClick = {
+//                        onAddIngredient(it)
+//                    }
+//                ) {
+//                    Text("Add")
+//                }
+//            }
+//        }
+
+//        Row {
+//            OutlinedTextField(
+//                value = newIngredient,
+//                label = { Text("New Ingredient") },
+//                onValueChange = {
+//                    newIngredient = it
+//                },
+//                modifier = modifier
+//            )
+//            Button(
+//                onClick = {
+//                    onAddIngredient(Ingredient(newIngredient))
+//                }
+//            ) {
+//                Text("Add")
+//            }
+//        }
 
     }
 }
