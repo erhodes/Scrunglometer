@@ -18,11 +18,13 @@ import com.gemalto.scgrunglometer.repository.RecipeRepository
 import com.gemalto.scgrunglometer.ui.theme.ScrunglometerTheme
 import com.gemalto.scgrunglometer.viewmodel.IngredientViewModel
 import com.gemalto.scgrunglometer.viewmodel.RecipeViewModel
+import com.gemalto.scgrunglometer.viewmodel.SymptomViewModel
 
 class MainActivity : ComponentActivity() {
 
     private val mainViewModel: RecipeViewModel by viewModels()
     private val ingredientViewModel: IngredientViewModel by viewModels()
+    private val symptomViewModel: SymptomViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +37,7 @@ class MainActivity : ComponentActivity() {
         val repo = RecipeRepository(database)
         mainViewModel.initialize(repo)
         ingredientViewModel.initialize(repo)
+        symptomViewModel.initialize(repo)
 
         enableEdgeToEdge()
         setContent {
@@ -43,6 +46,7 @@ class MainActivity : ComponentActivity() {
                     MainApp(
                         mainViewModel,
                         ingredientViewModel,
+                        symptomViewModel,
                         Modifier.padding(innerPadding)
                     )
                 }

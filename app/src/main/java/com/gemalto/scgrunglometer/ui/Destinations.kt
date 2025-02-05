@@ -14,8 +14,17 @@ sealed class Destinations {
     data object RecipeList: Destinations()
 
     @Serializable
+    data object SymptomsList: Destinations()
+
+    @Serializable
     data object RecipeDetails: Destinations()
 
     @Serializable
     data object RecipeManagement: Destinations()
+
+    @Serializable
+    data class IngredientDetails(val ingredientId: Int): Destinations()
+
+    @Serializable
+    data object IngredientManagement: Destinations()
 }

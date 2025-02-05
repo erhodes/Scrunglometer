@@ -11,7 +11,7 @@ import com.gemalto.scgrunglometer.R
 import com.gemalto.scgrunglometer.ui.theme.ScrunglometerTheme
 
 @Composable
-fun HomeScreen(onRecipesClick: () -> Unit, onIngredientsClick: () -> Unit, modifier: Modifier = Modifier) {
+fun HomeScreen(onRecipesClick: () -> Unit, onIngredientsClick: () -> Unit, onSymptomsClick: () -> Unit, modifier: Modifier = Modifier) {
     Column {
         Button(
             onClick = onRecipesClick
@@ -23,6 +23,11 @@ fun HomeScreen(onRecipesClick: () -> Unit, onIngredientsClick: () -> Unit, modif
         ) {
             Text(stringResource(R.string.ingredients))
         }
+        Button(
+            onClick = onSymptomsClick
+        ) {
+            Text(stringResource(R.string.symptoms))
+        }
     }
 }
 
@@ -30,6 +35,6 @@ fun HomeScreen(onRecipesClick: () -> Unit, onIngredientsClick: () -> Unit, modif
 @Composable
 fun HomeScreenPreview() {
     ScrunglometerTheme {
-        HomeScreen({}, {})
+        HomeScreen({}, {}, {})
     }
 }

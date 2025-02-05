@@ -1,8 +1,11 @@
 package com.gemalto.scgrunglometer.ui.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Button
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,11 +20,22 @@ import com.gemalto.scgrunglometer.ui.IngredientDisplay
 import com.gemalto.scgrunglometer.ui.theme.ScrunglometerTheme
 
 @Composable
-fun IngredientListScreen(ingredients: List<Ingredient>, onAdd: (String) -> Unit, modifier: Modifier = Modifier) {
+fun IngredientListScreen(ingredients: List<Ingredient>, onNavigateToIngredient: (Ingredient) -> Unit,
+                         onAdd: (String) -> Unit, modifier: Modifier = Modifier) {
 
     Column {
+        Text(
+            "Current Ingredients",
+            style = MaterialTheme.typography.titleLarge
+        )
+        HorizontalDivider()
         ingredients.forEach {
-            IngredientDisplay(it)
+            IngredientDisplay(
+                it,
+                modifier = Modifier.clickable {
+                    onNavigateToIngredient(it)
+                }
+            )
         }
 
         var newIngredientName by rememberSaveable { mutableStateOf("") }
@@ -49,6 +63,6 @@ fun IngredientListScreen(ingredients: List<Ingredient>, onAdd: (String) -> Unit,
 @Composable
 fun IngredientListScreenPreview() {
     ScrunglometerTheme {
-        IngredientListScreen(listOf(Ingredient("Parsley"), Ingredient("Sage")), {})
+        IngredientListScreen(listOf(Ingredient("Parsley"), Ingredient("Sage")), {}, {})
     }
 }

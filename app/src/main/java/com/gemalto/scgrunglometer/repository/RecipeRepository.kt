@@ -6,11 +6,12 @@ import com.gemalto.scgrunglometer.database.AppDatabase
 import com.gemalto.scgrunglometer.database.IngredientEntity
 import com.gemalto.scgrunglometer.database.RecipeEntity
 import com.gemalto.scgrunglometer.database.RecipeIngredientCrossRef
+import com.gemalto.scgrunglometer.database.SymptomEntity
 import com.gemalto.scgrunglometer.model.Ingredient
 import com.gemalto.scgrunglometer.model.Recipe
+import com.gemalto.scgrunglometer.model.Symptom
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class RecipeRepository(
@@ -20,35 +21,36 @@ class RecipeRepository(
 
     val recipes = mutableStateListOf<Recipe>()
     val ingredients = mutableStateListOf<Ingredient>()
+    val symptoms = mutableStateListOf<Symptom>()
 
     init {
         scope.launch(Dispatchers.IO) {
-            //load in existing recipes from database
-            Log.d("Eric","RECIPES")
-            database.recipeDao().getAll().forEach { entity ->
-                Log.d("Eric","$entity")
-//                recipes.add(Recipe(entity.name, entity.recipeId))
-            }
+            // load in the ingredients
             Log.d("Eric","INGREDIENTS")
             database.ingredientDao().getAll().forEach {
                 Log.d("Eric","$it")
                 ingredients.add(it.toIngredient())
             }
-            // load in relationships all at once?
+            // load in symptoms
+            database.symptomDao().getAll().forEach {
+                symptoms.add(it.toSymptom())
+            }
+
+            // load in recipes and relationships
             Log.d("Eric","LINKS")
             database.recipeIngredientCrossRefDao().getRecipesWithIngredients().forEach {
                 Log.d("Eric","link ${it.recipe} with ${it.ingredients.size}")
                 val recipe = Recipe(it.recipe.name, it.recipe.recipeId)
                 it.ingredients.forEach { ingredient ->
                     // I think its safe to assume that the ingredients all exist
-                    recipe.ingredients.add(getIngredient(ingredient.ingredientId)!!)
+                    recipe.ingredients.add(getIngredientById(ingredient.ingredientId)!!)
                 }
                 recipes.add(recipe)
             }
         }
     }
 
-    private fun getIngredient(id: Int): Ingredient? {
+    fun getIngredientById(id: Int): Ingredient? {
         return ingredients.find {
             it.id == id
         }
@@ -58,6 +60,13 @@ class RecipeRepository(
         scope.launch {
             val id = database.ingredientDao().insert(IngredientEntity(name)).toInt()
             ingredients.add(Ingredient(name, id))
+        }
+    }
+
+    fun addSymptom(name: String) {
+        scope.launch {
+            val id = database.symptomDao().insert(SymptomEntity(name)).toInt()
+            symptoms.add(Symptom(name, id))
         }
     }
 

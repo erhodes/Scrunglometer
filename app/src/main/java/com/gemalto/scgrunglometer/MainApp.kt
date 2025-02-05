@@ -13,14 +13,18 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.gemalto.scgrunglometer.ui.Destinations
 import com.gemalto.scgrunglometer.ui.screen.HomeScreen
+import com.gemalto.scgrunglometer.ui.screen.IngredientDetailsScreen
 import com.gemalto.scgrunglometer.ui.screen.IngredientListScreen
 import com.gemalto.scgrunglometer.ui.screen.RecipeListScreen
 import com.gemalto.scgrunglometer.ui.screen.RecipeManagementScreen
 import com.gemalto.scgrunglometer.ui.screen.RecipeScreen
+import com.gemalto.scgrunglometer.ui.screen.SymptomsScreen
 import com.gemalto.scgrunglometer.viewmodel.IngredientViewModel
 import com.gemalto.scgrunglometer.viewmodel.RecipeViewModel
+import com.gemalto.scgrunglometer.viewmodel.SymptomViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -40,6 +44,7 @@ fun LifecycleSafeLaunchedEffect(block: suspend () -> Unit) {
 fun MainApp(
     recipeViewModel: RecipeViewModel,
     ingredientViewModel: IngredientViewModel,
+    symptomViewModel: SymptomViewModel,
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController()
 ) {
@@ -53,7 +58,18 @@ fun MainApp(
             composable<Destinations.Home> {
                 HomeScreen(
                     onRecipesClick = {navController.navigate(Destinations.RecipeList)},
-                    onIngredientsClick = {navController.navigate(Destinations.IngredientList)}
+                    onIngredientsClick = {navController.navigate(Destinations.IngredientList)},
+                    onSymptomsClick = { navController.navigate(Destinations.SymptomsList)}
+                )
+            }
+
+            composable<Destinations.SymptomsList> {
+                val symptoms = symptomViewModel.symptoms
+                SymptomsScreen(
+                    symptoms = symptoms,
+                    onAdd = {
+                        symptomViewModel.addSymptom(it)
+                    }
                 )
             }
 
@@ -61,6 +77,9 @@ fun MainApp(
                 val ingredientList = ingredientViewModel.ingredients
                 IngredientListScreen(
                     ingredients = ingredientList,
+                    onNavigateToIngredient = {
+                        navController.navigate(Destinations.IngredientDetails(it.id))
+                    },
                     onAdd = {
                         ingredientViewModel.addIngredient(it)
                     }
@@ -83,6 +102,7 @@ fun MainApp(
             }
 
             composable<Destinations.RecipeDetails> {
+                // for this one I'm trying out getting the recipe from the viewModel
                 val recipe = recipeViewModel.recipe
                 RecipeScreen(
                     modifier = modifier,
@@ -106,6 +126,21 @@ fun MainApp(
                         recipeViewModel.removeIngredientFromRecipe(it)
                     }
                 )
+            }
+
+            composable<Destinations.IngredientDetails> {
+                // for this one I'm trying out navigation with an argument
+                val route: Destinations.IngredientDetails = it.toRoute()
+                IngredientDetailsScreen(
+                    ingredient = ingredientViewModel.getIngredientById(route.ingredientId)!!,
+                    onNavigate = {
+
+                    }
+                )
+            }
+
+            composable<Destinations.IngredientManagement> {
+
             }
         }
     }

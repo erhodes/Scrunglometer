@@ -2,26 +2,21 @@ package com.gemalto.scgrunglometer.viewmodel
 
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
-import com.gemalto.scgrunglometer.model.Ingredient
+import com.gemalto.scgrunglometer.model.Symptom
 import com.gemalto.scgrunglometer.repository.RecipeRepository
 
-class IngredientViewModel: ViewModel() {
+class SymptomViewModel: ViewModel() {
+    val symptoms: SnapshotStateList<Symptom>
+        get() = repository.symptoms
 
     private lateinit var repository: RecipeRepository
-
-    val ingredients: SnapshotStateList<Ingredient>
-        get() = repository.ingredients
 
     //todo replace this with dependency injection
     fun initialize(repo: RecipeRepository) {
         repository = repo
     }
 
-    fun addIngredient(name: String) {
-        repository.addIngredient(name)
-    }
-
-    fun getIngredientById(id: Int): Ingredient? {
-        return repository.getIngredientById(id)
+    fun addSymptom(name: String) {
+        repository.addSymptom(name)
     }
 }
